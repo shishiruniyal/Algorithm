@@ -2,83 +2,101 @@ import java.util.Scanner;
 
 class chefspl{
 
-public static boolean evenCheck(StringBuilder s){
-	int length = s.length();
-	int i=0;
-	while(i<(length/2) && s.charAt(i)==s.charAt(length/2+i)){
-		i++;
-	}
-	if(i==length/2){
-		return true;
-	}
-		return false;
-}
+	public boolean check(String input){
 
-public static void main(String[] args){
-int test;
-Scanner sc;
-StringBuilder input;
-int length;
-boolean check;
-int oddCount,index;
-int[] alpha = new int[26];
+		int count,length,i,j;boolean flag;
 
-sc = new Scanner(System.in);
-test = sc.nextInt();
+		length = input.length();
+		flag = true;
 
-while(test>0){
-	oddCount=0;
-	check=true;
-	index = 0;
-	input = new StringBuilder(sc.next());
-	//System.out.println(input);
-	length = input.length();
-	for(int i=0;i<26;i++){
-		alpha[i]=0;
-	}
-	if(length!=1)
-	{
-	if(length%2==0){
-		check = evenCheck(input);
-	}
-	else{
-		for(int i=0;i<length;i++){
-			alpha[input.charAt(i)-'a']+=1;
+		if(length==1){
+			return false;
 		}
-		for(int i=0;i<26;i++){
-			if(alpha[i]%2!=0){
-				oddCount++;
-				index = i;
+		if(length%2==0){
+			i = 0; j = length/2;
+				while(i<length/2){ 
+					if(input.charAt(i) == input.charAt(j)){
+					i++;
+					j++;
+				}
+				else{
+					return false;
+				}
 			}
-			if(oddCount>1){
-				check = false;
-				break;
-			}
+
 		}
-		if(check==true && oddCount==1){
-			input.deleteCharAt(index);
-			check = evenCheck(input);
-		}
-		
-	}
-}
-else{
-	check = false;
-}
-	if(check){
-			System.out.println("YES");
-		}
+
+
 		else{
-			System.out.println("NO");
+			
+			//case 1 on the left
+			i=0;j=length/2+1;
+			count=0;
+			flag = true;
+			while(i<=length/2 && j<length){
+				if(input.charAt(i)==input.charAt(j)){
+					i++;
+					j++;
+				}
+				else if(count==0 && input.charAt(i+1)==input.charAt(j)){
+					count++;
+					i++;
+				}
+				else{
+					flag = false;
+					break;
+				}
+			}
+			//case 2 on the right
+
+			if(flag==false){
+				i=0;j=length/2;
+				count=0;
+				flag=true;
+
+				while(i<length/2 && j<length){
+				if(input.charAt(i)==input.charAt(j)){
+					i++;
+					j++;
+				}
+				else if(count==0 && input.charAt(i)==input.charAt(j+1)){
+					count++;
+					j++;
+				}
+				else{
+					flag = false;
+					break;
+				}
+			}
+
+			}
+		}		
+			return flag;
+
 		}
-	test--;
+
+
+
+
+	public static void main(String s[]){
+		Scanner sc = new Scanner(System.in);
+		int test;
+		String input;
+		boolean finnal;
+
+		test = sc.nextInt();
+		chefspl c = new chefspl();
+		while(test>0){
+
+			input = sc.next();
+			finnal = c.check(input);
+			if(finnal){
+				System.out.println("YES");
+			}
+			else{
+				System.out.println("NO");
+			}
+			test--;
+		}
+	}
 }
-}
-
-}
-
-
-
-
-
-
