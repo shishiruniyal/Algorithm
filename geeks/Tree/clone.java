@@ -54,8 +54,47 @@ class clone{
 			return;
 		}
 		Inorder(root.left);
-		System.out.print(" "+root.value);
+		
+		if(root.random!=null)
+			System.out.print(" "+root.value+" random = "+root.random.value);
+		else
+			System.out.print(" "+root.value);
 		Inorder(root.right);
+	}
+
+
+//IF CHANGE OF TREE STRUCTURE IS ALLOWED
+
+	void Modify2(Node root){
+		if(root==null){
+			return;
+		}
+		Node temp;
+		temp = root.left;
+		root.left = new Node(root.value);
+		root.left.left = temp;
+		Modify2(temp);
+		Modify2(root.right);
+	}
+	void Modify2Random(Node root){
+		if(root==null){
+			return;
+		}
+		if(root.random!=null)
+		root.left.random = root.random.left;
+		Modify2Random(root.left.left);
+		Modify2Random(root.right);
+	}
+
+	Node FinalCarving(Node root){
+		if(root==null){
+			return null;
+		}
+		Node newRoot = root.left;
+		root.left = root.left.left;
+		newRoot.left = FinalCarving(root.left);
+		newRoot.right = FinalCarving(root.right);
+		return newRoot;
 	}
 
 	public static void main(String s[]){
@@ -71,9 +110,33 @@ class clone{
         System.out.println("Normal tree");
         c.Inorder(root);
         System.out.println();
-        cloneRoot = c.doCloning(root);
-        System.out.println("Printing cloned tree");
-        c.Inorder(cloneRoot);
+        // cloneRoot = c.doCloning(root);
+        // System.out.println("Printing cloned tree");
+        // c.Inorder(cloneRoot);
+        // System.out.println();
+
+ 		
+ 		// New appraoch with changing out tree
+
+        c.Modify2(root);
+   
+   
+
+        c.Modify2Random(root);
+ 
+        System.out.println("Finally carved out tree is");
+
+       	Node newNode = c.FinalCarving(root);
+
+        c.Inorder(newNode);
+
         System.out.println();
+        System.out.println("Original tree");
+
+        c.Inorder(root);
+
+        System.out.println();
+
+
 	}
 }

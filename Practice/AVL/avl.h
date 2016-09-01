@@ -4,7 +4,6 @@ typedef struct node{
 	struct node *left;
 	struct node *right;
 	struct node *parent;
-
 }node;
 
 node * newNode(long int data);
